@@ -36,7 +36,7 @@ void CreateKeyPair(long int p,long int q)
     long long int pvtKey = (1 + (k*publicKey))/e;
 }
 
-void encrypt(int seed,long long int n,long int e,char fileName[]) //pass the name of the file to the function
+void encrypt(long long int n,long int e,char fileName[]) //pass the name of the file to the function
 {
     //e and n are created in the createKeyPair function and must be passed to the encrypt function
 
