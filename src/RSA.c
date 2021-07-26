@@ -81,8 +81,3 @@ void decrypt(long long int pvtKey, long long int n, char fileName[])
     fclose(fp1);
     fclose(fp2);
 }
-
-void main()
-{
-
-}
