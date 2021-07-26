@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
 
 long int gcd(long int a, long int b)
 {
@@ -7,7 +9,7 @@ long int gcd(long int a, long int b)
     {
         temp = a%b;
         if (temp == 0)
-          return b;
+            return b;
         a = b;
         b = temp;
     }
@@ -34,21 +36,53 @@ void CreateKeyPair(long int p,long int q)
     long long int pvtKey = (1 + (k*publicKey))/e;
 }
 
-int encrypt(int seed,long long int n,long int e)
+void encrypt(int seed,long long int n,long int e,char fileName[]) //pass the name of the file to the function
 {
     //e and n are created in the createKeyPair function and must be passed to the encrypt function
 
     //Encrypted text = (orignal value ^ e) % n
 
-    int encryptedText=pow(seed,e);
-    encryptedText=encryptedText%n;
+    FILE *fp1=fopen(fileName,"r+w");
+    FILE *fp2=fopen("tempfile1.txt","a");
 
-    return(encryptedText);
+    char c;
+
+    while ((c = fgetc(fp1)) != EOF)
+    {
+        int encryptedText=(int)pow(c,e);
+        encryptedText=encryptedText%n;
+        fputc(encryptedText,fp2);
+    }
+
+    int delFlag=remove(fileName);
+    int i=rename("tempfile1.txt",fileName);
+
+    fclose(fp1);
+    fclose(fp2);
 }
 
-int decrypt(int seed, int encryptedText, long long int pvtKey, long long int n )
+void decrypt(long long int pvtKey, long long int n, char fileName[])
 {
-    int decryptedText=pow(encryptedText,pvtKey);
-    decryptedText=decryptedText%n;
-    return(decryptedText);
+    FILE *fp1=fopen(fileName,"r+w");
+    FILE *fp2=fopen("tempfile2.txt","a");
+    char c;
+
+    while ((c = fgetc(fp1)) != EOF)
+    {
+        double trial = pow(c,pvtKey);
+        int decryptedText=pow(c,pvtKey);
+        decryptedText=decryptedText%n;
+    }
+
+    int delFlag=remove(fileName);
+    int i=rename("tempfile2.txt",fileName);
+
+
+    fclose(fp1);
+    fclose(fp2);
+}
+
+void main()
+{
+
 }
