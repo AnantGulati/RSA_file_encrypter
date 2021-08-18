@@ -3,51 +3,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
-#include "rsa-final-2.h"
-
-int e, d, n;
-
-int KeyGeneration()
-{
-    int p, q;
-    int phi_n;
- 
-    do {
-        do
-            p = rand();
-        while (p % 2 == 0);
- 
-    } while (!PrimarityTest(2, p));
- 
-    do {
-        do
-            q = rand();
-        while (q % 2 == 0);
-    } while (!PrimarityTest(2, q));
- 
-    n = p * q;
-    phi_n = (p - 1) * (q - 1);
- 
-    do
-        e = rand() % (phi_n - 2) + 2; // 1 < e < phi_n
-    while (gcd(e, phi_n) != 1);
- 
-    d = inverse(phi_n, e);
-}
- 
-int Encryption(int value, FILE* out)
-{
-    int cipher;
-    cipher = FindT(value, e, n);
-    fprintf(out, "%d ", cipher);
-}
- 
-int Decryption(int value, FILE* out)
-{
-    int decipher;
-    decipher = FindT(value, d, n);
-    fprintf(out, "%c", decipher);
-}
+#include "rsa.h"
 
 int main()
 {
@@ -75,7 +31,7 @@ int main()
             scanf("%s",name);
             fflush(stdin);
             printf("Enter your password: ");
-            printf("pass : %s\n",pwd);
+            scanf("%s",pwd);
             FILE *file = fopen("accounts.txt", "r");
             if(!file) 
             {
@@ -117,7 +73,11 @@ int main()
         }
     }
     else
+    {   
         printf("Invalid Input\n");
+        exit(0);
+    }
+        
         
     ch = -1;
     while(ch!=3)
