@@ -115,33 +115,63 @@ int inverse(int a, int b)
  
     return inv;
 }
- 
+
+int usn_exists(char *n)
+{
+    
+    FILE* filePointer;
+	int wordExist=0;
+	int bufferLength = 255;
+	char line[bufferLength];
+	filePointer = fopen("accounts.txt", "r");
+	while(fgets(line, bufferLength, filePointer))
+	{
+		char *ptr = strstr(line, n);
+		if (ptr != NULL) 
+		{
+			wordExist=1;
+			break;
+		}
+	}
+	fclose(filePointer);
+	return wordExist;
+}
+
 int register_user(char* n, char* p, char* ui)
 {
-    FILE *fp;
-    FILE *fp2;
-    fp = fopen("accounts.txt", "a");
-    if(fp == NULL)
-   {
-      printf("Error!");   
-      exit(1);             
-   }
+    int wordexists = -1;
+    printf("Enter username: ");
+    scanf("%s",n);
+    wordexists = usn_exists(n);
+    if (wordexists == 1)
+    {
+        printf("This username already exists, try logging in instead!\n");
+        exit(0);
+    }
+    else
+    {
+        printf("Enter password: ");
+        scanf("%s",p);
 
-   printf("Enter username: ");
-   scanf("%s",n);
-   printf("Enter password: ");
-   scanf("%s",p);
+        FILE *fp;
+        FILE *fp2;
+        fp = fopen("accounts.txt", "a");
+        if(fp == NULL)
+        {
+            printf("Error!");   
+            exit(1);             
+        }
 
-   fprintf(fp,"USN: %s ; PWD: %s\n",n,p);
+        fprintf(fp,"USN: %s ; PWD: %s\n",n,p);
 
-   fclose(fp);
-   printf("Account successfully created!\n");
-   strcpy(ui,n);
-   strcat(ui,".txt");
-   fp2 = fopen(ui,"w");
-   fclose(fp2);
-   return 0;
-
+        fclose(fp);
+        printf("Account successfully created!\n");
+        strcpy(ui,n);
+        strcat(ui,".txt");
+        fp2 = fopen(ui,"w");
+        fclose(fp2);
+        return 0;
+    }
 }
 
 
@@ -226,3 +256,4 @@ int Decryption(int value, FILE* out)
     decipher = FindT(value, d, n);
     fprintf(out, "%c", decipher);
 }
+

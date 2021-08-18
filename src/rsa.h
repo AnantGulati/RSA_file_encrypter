@@ -7,3 +7,7 @@ int register_user(char* , char* ,char*);
 int login_user(char* ,char* ,char* ,char* ,int ,int ,int);
 int read_file();
 int inbox(char* , char* , char* );
+int usn_exists(char* n);
+int KeyGeneration();
+int Encryption(int , FILE* );
+int Decryption(int , FILE* );
